@@ -25,7 +25,8 @@ IncludeTemplateLangFile(__FILE__);
 		
 	</style>
 	<![endif]-->
-    <?$APPLICATION->ShowMeta("specialdate")?>
+    <?$APPLICATION->ShowMeta("specialdate") // ex2-34?>
+    <?//$APPLICATION->ShowMeta("canonical") // ex2-108?>
 	<title><?$APPLICATION->ShowTitle()?></title>
 </head>
 <body>

@@ -4,6 +4,6 @@
 
 global $APPLICATION;
 
-if(!empty( $arResult['META_SPECIAL_DATE'])){
+if(!empty($arResult['META_SPECIAL_DATE'])){
     $APPLICATION->SetPageProperty('specialdate', $arResult['META_SPECIAL_DATE']);
 }
