@@ -12,8 +12,6 @@ class Check404{
 
     public static function onEpilogHandler()
     {
-       file_put_contents($_SERVER['DOCUMENT_ROOT'].'/krissix.log',var_export('onEpilogHandler',1)."\n");
-       file_put_contents($_SERVER['DOCUMENT_ROOT'].'/krissix.log',var_export(ERROR_404,1)."\n");
         if (defined("ERROR_404") && ERROR_404 === "Y") {
             global $APPLICATION;
 
