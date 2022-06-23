@@ -17,3 +17,6 @@ if (file_exists($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/include/constant
 
 if (file_exists($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/include/handlers.php"))
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/include/handlers.php");
+
+if (file_exists($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/include/tasks.php"))
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/include/tasks.php");
