@@ -10,3 +10,7 @@ $eventManager->addEventHandler("main", "OnEpilog", ["Ex2\Handlers\Check404", "on
 
 // [ex2-51] Изменение данных в письме
 $eventManager->addEventHandler("main", "OnBeforeEventAdd", ["Ex2\Handlers\FeedbackAuthor", "onBeforeEventAddHandler"]);
+
+
+//[ex2-95] Упростить меню в адмистративном разделе для контент-менеджера
+$eventManager->addEventHandler("main", "OnBuildGlobalMenu", ["Ex2\Handlers\ContentMenu", "onBuildGlobalMenuHandler"]);
