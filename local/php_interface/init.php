@@ -5,7 +5,8 @@ use \Bitrix\Main\Loader;
     '',
     array(
        // 'Ex2\Debug' => "lib/debug.php",
-        'Ex2\Handlers\ProductDeactivation' => "/local/php_interface/include/Ex2/Handlers/ProductDeactivation.php",
+        'Ex2\Handlers\ProductDeactivation' => "/local/php_interface/include/Ex2/Handlers/ProductDeactivation.php", //[ex2-50]
+        'Ex2\Handlers\Check404' => "/local/php_interface/include/Ex2/Handlers/Check404.php", //[ex2-93]
     )
 );
 
