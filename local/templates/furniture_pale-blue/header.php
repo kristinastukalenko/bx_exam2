@@ -93,39 +93,24 @@ $APPLICATION->IncludeFile(
 		</div>
 		
 		<div id="content">
-		
 			<div id="sidebar">
-                <div class="content-block">
-                    <div class="content-block-inner">
-                        <h3><?=GetMessage('CFT_LANG_CANGE')?></h3>
-                        <?$APPLICATION->IncludeComponent(
-                            "bitrix:main.site.selector",
-                            "dropdown_lang",
-                            Array(
-                                "CACHE_TIME" => "3600",
-                                "CACHE_TYPE" => "A",
-                                "SITE_LIST" => array("*all*")
-                            )
-                        );?>
-                    </div>
-                </div>
-<?$APPLICATION->IncludeComponent("bitrix:menu", "left", array(
-	"ROOT_MENU_TYPE" => "left",
-	"MENU_CACHE_TYPE" => "A",
-	"MENU_CACHE_TIME" => "36000000",
-	"MENU_CACHE_USE_GROUPS" => "Y",
-	"MENU_CACHE_GET_VARS" => array(
-	),
-	"MAX_LEVEL" => "1",
-	"CHILD_MENU_TYPE" => "left",
-	"USE_EXT" => "Y",
-	"ALLOW_MULTI_SELECT" => "N"
-	),
-	false,
-	array(
-		"ACTIVE_COMPONENT" => "Y"
-	)
-);?>
+                <?$APPLICATION->IncludeComponent("bitrix:menu", "left", array(
+                    "ROOT_MENU_TYPE" => "left",
+                    "MENU_CACHE_TYPE" => "A",
+                    "MENU_CACHE_TIME" => "36000000",
+                    "MENU_CACHE_USE_GROUPS" => "Y",
+                    "MENU_CACHE_GET_VARS" => array(
+                    ),
+                    "MAX_LEVEL" => "1",
+                    "CHILD_MENU_TYPE" => "left",
+                    "USE_EXT" => "Y",
+                    "ALLOW_MULTI_SELECT" => "N"
+                    ),
+                    false,
+                    array(
+                        "ACTIVE_COMPONENT" => "Y"
+                    )
+                );?>
 				<div class="content-block">
 					<div class="content-block-inner">
 						<h3><?=GetMessage('CFT_NEWS')?></h3>
@@ -141,16 +126,39 @@ $APPLICATION->IncludeFile(
 				
 				<div class="content-block">
 					<div class="content-block-inner">
-						
-<?
-$APPLICATION->IncludeComponent("bitrix:search.form", "flat", Array(
-	"PAGE" => "#SITE_DIR#search/",
-),
-	false
-);
-?>
+                        <?
+                        $APPLICATION->IncludeComponent("bitrix:search.form", "flat", Array(
+                            "PAGE" => "#SITE_DIR#search/",
+                        ),
+                            false
+                        );
+                        ?>
 					</div>
 				</div>
+
+                <div class="content-block">
+                    <div class="content-block-inner">
+                        <h3><?=GetMessage('CFT_LANG_CANGE')?></h3>
+                        <?$APPLICATION->IncludeComponent(
+                            "bitrix:main.site.selector",
+                            "dropdown_lang",
+                            Array(
+                                "CACHE_TIME" => "3600",
+                                "CACHE_TYPE" => "A",
+                                "SITE_LIST" => array("*all*")
+                            )
+                        );?>
+                    </div>
+                </div>
+
+                <div style="color:red; margin: 34px 15px 35px 15px">
+                    <div>
+                        <?= $APPLICATION->ShowViewContent('min_price'); ?>
+                    </div>
+                    <div>
+                        <?= $APPLICATION->ShowViewContent('max_price'); ?>
+                    </div>
+                </div>
 
 				<div class="information-block">
 					<div class="top"></div>
