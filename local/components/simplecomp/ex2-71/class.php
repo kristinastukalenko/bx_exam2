@@ -133,9 +133,21 @@ class CAPConnectComponent extends \CBitrixComponent
 
         while ($ob = $resElements->GetNextElement()) {
             $arEl = $ob->GetFields();
+
+            $arButtons = CIBlock::GetPanelButtons(
+                $arEl["IBLOCK_ID"],
+                $arEl["ID"],
+                0,
+                array("SECTION_BUTTONS" => false, "SESSID" => false)
+            );
+            $arEl["ADD_LINK"] = $arButtons["edit"]["add_element"]["ACTION_URL"];
+            $arEl["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"];
+            $arEl["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"];
+
             // Т.к. св-во "FIRMS" множественное, а в ИБ хранятся св-ва в одной таблице (не в отдельной),
             // чтобы не было дублей - получаем св-ва через отдельный метод
             $arEl["PROPERTIES"] = $ob->GetProperties();
+
             $arResult["ELEMENTS"][$arEl["ID"]] = $arEl;
         }
 

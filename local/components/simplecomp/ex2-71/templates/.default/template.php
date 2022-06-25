@@ -16,16 +16,19 @@ ___
 <p>Каталог: </p>
 <ul>
     <?foreach($arResult['GROUP_CUSTOM_SECTIONS'] as $arItem):?>
-            <?
-            $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
-            $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BPS_ELEMENT_DELETE_CONFIRM')));
-            ?>
-                 <li id="<?=$this->GetEditAreaId($arItem['ID']);?>">
+                 <li>
                      <?=$arItem['NAME']?>
                      <?if($arItem['ITEMS']):?>
                         <ul>
-                        <?foreach($arItem['ITEMS'] as $elemId):?>
-                            <li>
+                        <? $findElem = [];
+                        foreach($arItem['ITEMS'] as $elemId):?>
+                            <?
+
+                            $this->AddEditAction($arItem['ID']."_".$elemId, $arResult['ELEMENTS'][$elemId]['ADD_LINK'], CIBlock::GetArrayByID($arResult['ELEMENTS'][$elemId]["IBLOCK_ID"], "ELEMENT_ADD"));
+                            $this->AddEditAction($arItem['ID']."_".$elemId, $arResult['ELEMENTS'][$elemId]['EDIT_LINK'], CIBlock::GetArrayByID($arResult['ELEMENTS'][$elemId]["IBLOCK_ID"], "ELEMENT_EDIT"));
+                            $this->AddDeleteAction($arItem['ID']."_".$elemId, $arResult['ELEMENTS'][$elemId]['DELETE_LINK'], CIBlock::GetArrayByID($arResult['ELEMENTS'][$elemId]["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BPS_ELEMENT_DELETE_CONFIRM')));
+                            ?>
+                            <li  id="<?=$this->GetEditAreaId($arItem['ID']."_".$elemId);?>">
                                 <?=$arResult['ELEMENTS'][$elemId]['NAME'];?> -
                                 <?=$arResult['ELEMENTS'][$elemId]['PROPERTIES']['ARTNUMBER']['VALUE'];?> -
                                 <?=$arResult['ELEMENTS'][$elemId]['PROPERTIES']['PRICE']['VALUE'];?> -
