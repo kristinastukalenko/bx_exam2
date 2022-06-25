@@ -21,12 +21,24 @@ use Bitrix\Main\SystemException;
 class CAPConnectComponent extends \CBitrixComponent
 {
 
+    // ex2-49
+    // Фильтр должен применяться, если в адресной строке присутствует параметр «F», с любым значением.
+    protected $bFilter = false;
+
+    public function __construct($component = null)
+    {
+        if (isset($_REQUEST["F"])) {
+            $this->bFilter = true;
+        }
+
+        parent::__construct($component);
+    }
 	public function onPrepareComponentParams($arParams)
 	{
         $arParams["IBLOCK_ID_CATALOG"] = intval($arParams["IBLOCK_ID_CATALOG"]);
         $arParams["IBLOCK_ID_CUSTOM_SECTION"] = intval($arParams["IBLOCK_ID_CUSTOM_SECTION"]);
 		$arParams['CODE_CUSTOM_PROP'] = trim($arParams['CODE_CUSTOM_PROP']);
-		$arParams['TEMPLATE_DETAIL_URL'] = trim($arParams['TEMPLATE_DETAIL_URL']);
+		$arParams['DETAIL_URL'] = trim($arParams['DETAIL_URL']);
 
         if(!isset($arParams["CACHE_TIME"]))
             $arParams["CACHE_TIME"] = 180;
@@ -82,6 +94,7 @@ class CAPConnectComponent extends \CBitrixComponent
             "IBLOCK_ID",
             "NAME",
             "DETAIL_PAGE_URL",
+            "CODE",
         );
         //WHERE
         $arFilter = array(
@@ -90,7 +103,34 @@ class CAPConnectComponent extends \CBitrixComponent
             "PROPERTY_".$this->arParams['CODE_CUSTOM_PROP'] =>  $arClassIDs,
             "ACTIVE"=>"Y",
         );
-        $resElements = CIBlockElement::GetList(false, $arFilter, false, false, $arSelect);
+        //
+        if($this->bFilter){
+            $arFilter[] = array(
+                "LOGIC" => "OR",
+               [
+                   '<=PROPERTY_PRICE' => 1700,
+                   'PROPERTY_MATERIAL' => 'Дерево, ткань',
+               ],
+               [
+                   '<=PROPERTY_PRICE' => 1500,
+                   'PROPERTY_MATERIAL' => 'Металл, пластик',
+               ],
+            );
+
+        }
+        // ex2-81
+        // Установить сортировку отбираемых элементов из информационного блока каталога товаров:
+        // сначала по наименованию, затем по полю сортировки.
+        $arSort = array(
+            "NAME"=> 'ASC',
+            "SORT"=> 'ASC',
+        );
+        $resElements = CIBlockElement::GetList($arSort, $arFilter, false, false, $arSelect);
+        // ex2-81
+        if($this->arParams["DETAIL_URL"]){
+            $resElements->SetUrlTemplates($this->arParams["DETAIL_URL"]);
+        }
+
         while ($ob = $resElements->GetNextElement()) {
             $arEl = $ob->GetFields();
             // Т.к. св-во "FIRMS" множественное, а в ИБ хранятся св-ва в одной таблице (не в отдельной),
@@ -131,9 +171,11 @@ class CAPConnectComponent extends \CBitrixComponent
             return;
 		}
 
-        if($this->StartResultCache(false, ($this->arParams["CACHE_GROUPS"] === "N" ? false: $USER->GetGroups()))) {
+        if($this->StartResultCache(false, [($this->arParams["CACHE_GROUPS"] === "N" ? false: $USER->GetGroups()), $this->bFilter] )) {
             $this->setArResult();
-
+            if($this->bFilter){
+                $this->AbortResultCache();
+            }
             $this->SetResultCacheKeys(array(
                 "COUNT_SECTIONS",
             ));

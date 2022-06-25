@@ -23,13 +23,15 @@ $arComponentParameters = array(
 			"TYPE" => "STRING",
 			"DEFAULT" => '',
 		),
-        "TEMPLATE_DETAIL_URL" => CIBlockParameters::GetPathTemplateParam(
+        // ex2-81
+        "DETAIL_URL" => CIBlockParameters::GetPathTemplateParam(
             "DETAIL",
-            "TEMPLATE_DETAIL_URL",
+            "DETAIL_URL",
             GetMessage("IBLOCK_DETAIL_URL"),
-            "/catalog_exam/#SECTION_ID#/#ELEMENT_CODE#.php",
+            "catalog_exam/#SECTION_ID#/#ELEMENT_CODE#",
             "URL_TEMPLATES"
         ),
+        // ./ex2-81
         "CACHE_TIME"  =>  Array("DEFAULT"=>180),
         "CACHE_GROUPS" => array(
             "PARENT" => "CACHE_SETTINGS",

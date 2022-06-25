@@ -30,7 +30,7 @@ ___
                                 <?=$arResult['ELEMENTS'][$elemId]['PROPERTIES']['ARTNUMBER']['VALUE'];?> -
                                 <?=$arResult['ELEMENTS'][$elemId]['PROPERTIES']['PRICE']['VALUE'];?> -
                                 <?=$arResult['ELEMENTS'][$elemId]['PROPERTIES']['MATERIAL']['VALUE'];?> -
-                                <a href="<?=$arResult['ELEMENTS'][$elemId]['DETAIL_PAGE_URL'];?>">Ссылка </a>
+                                (<?=$arResult['ELEMENTS'][$elemId]['DETAIL_PAGE_URL'];?> )
                             </li>
                         <? endforeach; ?>
                         </ul>
