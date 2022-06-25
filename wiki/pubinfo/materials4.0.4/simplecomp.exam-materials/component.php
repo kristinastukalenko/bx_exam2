@@ -12,7 +12,6 @@ if(!Loader::includeModule("iblock"))
 
 if(intval($arParams["PRODUCTS_IBLOCK_ID"]) > 0)
 {
-	
 	//iblock elements
 	$arSelectElems = array (
 		"ID",
@@ -40,10 +39,12 @@ if(intval($arParams["PRODUCTS_IBLOCK_ID"]) > 0)
 			"IBLOCK_ID",
 			"NAME",
 	);
+
 	$arFilterSect = array (
 			"IBLOCK_ID" => $arParams["PRODUCTS_IBLOCK_ID"],
 			"ACTIVE" => "Y"
 	);
+
 	$arSortSect = array (
 			"NAME" => "ASC"
 	);
@@ -67,9 +68,7 @@ if(intval($arParams["PRODUCTS_IBLOCK_ID"]) > 0)
 	while($arUser = $rsUsers->GetNext())
 	{
 		$arResult["USERS"][] = $arUser;
-	}	
-	
-	
+	}
 }
 $this->includeComponentTemplate();	
 ?>
