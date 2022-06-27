@@ -10,6 +10,7 @@ use \Bitrix\Main\Loader;
         'Ex2\Handlers\FeedbackAuthor' => "/local/php_interface/include/Ex2/Handlers/FeedbackAuthor.php", //[ex2-51]
         'Ex2\Handlers\ContentMenu' => "/local/php_interface/include/Ex2/Handlers/ContentMenu.php", //[ex2-95]
         'Ex2\Tasks\SuperSeo' => "/local/php_interface/include/Ex2/Tasks/SuperSeo.php", //[ex2-94]
+        'Ex2\Tasks\Report' => "/local/php_interface/include/Ex2/Tasks/addReport.php", //[ex2-104]
     )
 );
 

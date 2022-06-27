@@ -1,4 +1,8 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+
+CJSCore::Init(array('ajax'));
+
+?>
 <div class="news-detail">
 	<?if($arParams["DISPLAY_PICTURE"]!="N" && is_array($arResult["DETAIL_PICTURE"])):?>
 		<img class="detail_picture" src="<?=$arResult["DETAIL_PICTURE"]["SRC"]?>" width="<?=$arResult["DETAIL_PICTURE"]["WIDTH"]?>" height="<?=$arResult["DETAIL_PICTURE"]["HEIGHT"]?>" alt="<?=$arResult["NAME"]?>"  title="<?=$arResult["NAME"]?>" />
@@ -9,6 +13,46 @@
 	<?if($arParams["DISPLAY_NAME"]!="N" && $arResult["NAME"]):?>
 		<h3><?=$arResult["NAME"]?></h3>
 	<?endif;?>
+    <div class="reports">
+        <? if($arParams["REPORT_AJAX"] == 'Y') {
+            $currentPage = $APPLICATION->GetCurPageParam("REPORT_MODE=AJAX&NEWS_ID=".$arResult['ID'], array("REPORT_MODE", "NEWS_ID","TEXT","REPORT_STATUS"));
+        ?>
+            <a class="reports__link" href="<?=$currentPage?>" onclick="return false;"><?=GetMessage('EX2_100_REPORTS_TITLE_LINK')?></a>
+            <script>
+                BX.ready(function(){
+                    let __reportStatus = document.getElementById('reports_status');
+                    BX.bindDelegate(
+                        document.body, 'click', {className: 'reports__link' },
+                        function(e){
+                            if(!e)
+                                e = window.event;
+
+                            BX.ajax.loadJSON(
+                                '<?=$currentPage?>',
+                                function (data) {
+                                    console.log(data);
+                                    __reportStatus.innerText = data.REPORT_MSG;
+                                },
+                                function () {
+                                    __reportStatus.innerText = '<?=GetMessage('REPORT_ERROR')?>';
+                                },
+                            );
+                            return BX.PreventDefault(e);
+                        }
+                    );
+
+                });
+
+            </script>
+        <?} else{
+            $currentPage = $APPLICATION->GetCurPageParam("REPORT_MODE=GET&NEWS_ID=".$arResult['ID'], array("REPORT_MODE", "NEWS_ID", "TEXT","REPORT_STATUS"));
+        ?>
+            <a href="<?=$currentPage?>"><?=GetMessage('EX2_100_REPORTS_TITLE_LINK')?></a>
+        <? } ?>
+
+       <div id="reports_status"></div>
+       <br>---<br>
+    </div>
 	<div class="news-detail">
 	<?if($arParams["DISPLAY_PREVIEW_TEXT"]!="N" && $arResult["FIELDS"]["PREVIEW_TEXT"]):?>
 		<p><?=$arResult["FIELDS"]["PREVIEW_TEXT"];unset($arResult["FIELDS"]["PREVIEW_TEXT"]);?></p>
