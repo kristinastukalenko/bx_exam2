@@ -12,6 +12,9 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 ?>
+<p>
+    <?= GetMessage("EX2_107_TIME_STAMP") ?><? echo time(); ?>
+</p>
 ___
 <p>Каталог: </p>
 <ul>

@@ -176,9 +176,12 @@ class CAPConnectComponent extends \CBitrixComponent
 	{
 		global $APPLICATION;
 		global $USER;
+        // [ex2-107]
+        global $CACHE_MANAGER;
 
 		if(!$this->checkModules())
 		{
+            $this->AbortResultCache();
             ShowError(GetMessage("MODULE_NOT_INSTALLED"));
             return;
 		}
@@ -193,10 +196,19 @@ class CAPConnectComponent extends \CBitrixComponent
             $this->AddIncludeAreaIcon(array(
                                             'URL' => $arButtons["submenu"]["element_list"]["ACTION_URL"],
                                             'TITLE' => GetMessage('EX2_100_TITLE_BTN'),
+                                            "IN_PARAMS_MENU" => true,
                                         ));
         }
 
         if($this->StartResultCache(false, [($this->arParams["CACHE_GROUPS"] === "N" ? false: $USER->GetGroups()), $this->bFilter] )) {
+
+            // [ex2-107]
+            // Помечаем кэш тегом
+            if(defined("BX_COMP_MANAGED_CACHE"))
+            {
+                $CACHE_MANAGER->RegisterTag("iblock_id_".SERVICES_IBLOCK_ID);
+            }
+
             $this->setArResult();
             if($this->bFilter){
                 $this->AbortResultCache();
