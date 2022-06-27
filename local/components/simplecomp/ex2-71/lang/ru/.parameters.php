@@ -4,4 +4,7 @@ $MESS["IBLOCK_ID_CATALOG"] = "ID инфоблока с каталогом тов
 $MESS["IBLOCK_ID_CUSTOM_SECTION"] = "ID инфоблока с классификатором";
 $MESS["CODE_CUSTOM_PROP"] = "Код свойства товара, в котором хранится привязка товара к классификатору";
 $MESS["CP_BPR_CACHE_GROUPS"] = "Учитывать права доступа";
+$MESS['EX2_60_DESC_LIST_CONT'] = "Количество элементов на странице";
+$MESS["EX2_60_DESC_PAGER_NEWS"] = "Классификаторы";
+
 ?>

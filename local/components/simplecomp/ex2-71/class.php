@@ -24,6 +24,9 @@ class CAPConnectComponent extends \CBitrixComponent
     // ex2-49
     // Фильтр должен применяться, если в адресной строке присутствует параметр «F», с любым значением.
     protected $bFilter = false;
+    //ex2-60
+    protected $arNavParams;
+    protected $arNavigation;
 
     public function __construct($component = null)
     {
@@ -77,13 +80,21 @@ class CAPConnectComponent extends \CBitrixComponent
             "CHECK_PERMISSIONS" => $this->arParams["CACHE_GROUPS"],
         );
 
-        //EXECUTE
+        //EXECUTE ex2-60  $this->arNavParams
         $arResult["CUSTOM_SECTIONS"] = [];
-        $resElements = CIBlockElement::GetList(false, $arFilter, false, false, $arSelect);
+        $resElements = CIBlockElement::GetList(false, $arFilter, false, $this->arNavParams, $arSelect);
+
+        //ex2-60
+        $arResult["NAV_STRING"] = $resElements->GetPageNavStringEx(
+            $navComponentObject,
+            $this->arParams["PAGER_TITLE"],
+            $this->arParams["PAGER_TEMPLATE"],
+            $this->arParams["PAGER_SHOW_ALWAYS"]
+        );
+
         while ($arElement = $resElements->GetNext()) {
             $arResult["CUSTOM_SECTIONS"][] = $arElement;
         }
-
 
         $arClassIDs = array_column($arResult["CUSTOM_SECTIONS"], "ID");
         // </получить всех Классификаторов, так как по условию задачи их мало. Нет смысла получить 1000 товаров>
@@ -166,9 +177,10 @@ class CAPConnectComponent extends \CBitrixComponent
         }
 
         $this->arResult =  [ 'CUSTOM_SECTIONS' => $arResult["CUSTOM_SECTIONS"],
-                            'COUNT_SECTIONS' => count($arResult["CUSTOM_SECTIONS"]),
-                            'ELEMENTS' => $arResult["ELEMENTS"],
-                            'GROUP_CUSTOM_SECTIONS' => $arResult["GROUP_CUSTOM_SECTIONS"],
+                             'COUNT_SECTIONS' => count($arResult["CUSTOM_SECTIONS"]),
+                             'ELEMENTS' => $arResult["ELEMENTS"],
+                             'GROUP_CUSTOM_SECTIONS' => $arResult["GROUP_CUSTOM_SECTIONS"],
+                             'NAV_STRING' => $arResult["NAV_STRING"]
         ];
     }
 
@@ -185,27 +197,34 @@ class CAPConnectComponent extends \CBitrixComponent
             ShowError(GetMessage("MODULE_NOT_INSTALLED"));
             return;
 		}
+        // <ex2-60>
+        $this->arNavParams = array(
+            "nPageSize" => $this->arParams["ELEMENTS_COUNT"],
+            "bDescPageNumbering" =>  $this->arParams["PAGER_DESC_NUMBERING"]
+        );
+        $this->arNavigation = CDBResult::GetNavParams($this->arNavParams);
+        // <./ex2-60>
 
+        // <ex2-100>
         if($APPLICATION->GetShowIncludeAreas()) {
-            // <ex2-100>
+
             // Метод возвращает массив, описывающий набор кнопок для управления элементами инфоблока
             $arButtons = CIBlock::GetPanelButtons( $this->arParams["IBLOCK_ID_CATALOG"]);
             // Добавляет стандартные кнопки к компоненту, которые отображаются в области компонента в режиме редактирования сайта
             $this->addIncludeAreaIcons(CIBlock::GetComponentMenu($APPLICATION->GetPublicShowMode(), $arButtons));
             // Добавляет новую кнопку к тем кнопкам компонента, которые отображаются в области компонента в режиме редактирования сайта
             $this->AddIncludeAreaIcon(array(
-                                            'URL' => $arButtons["submenu"]["element_list"]["ACTION_URL"],
-                                            'TITLE' => GetMessage('EX2_100_TITLE_BTN'),
-                                            "IN_PARAMS_MENU" => true,
-                                        ));
+                                        'URL' => $arButtons["submenu"]["element_list"]["ACTION_URL"],
+                                        'TITLE' => GetMessage('EX2_100_TITLE_BTN'),
+                                        "IN_PARAMS_MENU" => true,
+                                    ));
         }
+        // <./ex2-100>
 
-        if($this->StartResultCache(false, [($this->arParams["CACHE_GROUPS"] === "N" ? false: $USER->GetGroups()), $this->bFilter] )) {
+        if($this->StartResultCache(false, [($this->arParams["CACHE_GROUPS"] === "N" ? false: $USER->GetGroups()), $this->bFilter, $this->arNavigation])) {
 
-            // [ex2-107]
-            // Помечаем кэш тегом
-            if(defined("BX_COMP_MANAGED_CACHE"))
-            {
+            // [ex2-107]  Помечаем кэш тегом
+            if(defined("BX_COMP_MANAGED_CACHE")) {
                 $CACHE_MANAGER->RegisterTag("iblock_id_".SERVICES_IBLOCK_ID);
             }
 
@@ -215,6 +234,7 @@ class CAPConnectComponent extends \CBitrixComponent
             }
             $this->SetResultCacheKeys(array(
                 "COUNT_SECTIONS",
+                "_NAVSTRING",
             ));
             $this->IncludeComponentTemplate();
         }

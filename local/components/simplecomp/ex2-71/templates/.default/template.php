@@ -13,9 +13,16 @@
 $this->setFrameMode(true);
 ?>
 <p>
-    <?= GetMessage("EX2_107_TIME_STAMP") ?><? echo time(); ?>
+    <? $sCurPage = $APPLICATION->GetCurPage() . "?F=Y"; ?>
+    <?= GetMessage("EX2_49_FILTER") ?> <a href="<?= $sCurPage ?>"><?= $sCurPage ?></a>
+    <br>
+    ---
 </p>
-___
+<p>
+    <?= GetMessage("EX2_107_TIME_STAMP") ?><? echo time(); ?>
+    <br>
+    ---
+</p>
 <p>Каталог: </p>
 <ul>
     <?foreach($arResult['GROUP_CUSTOM_SECTIONS'] as $arItem):?>
@@ -44,3 +51,6 @@ ___
                 &nbsp;</li>
     <? endforeach; ?>
  </ul>
+<br>---
+<p><b><?= GetMessage("EX2_60_NAVIGATION") ?></b></p>
+<br /><?=$arResult["NAV_STRING"]?>

@@ -31,7 +31,13 @@ $arComponentParameters = array(
             "catalog_exam/#SECTION_ID#/#ELEMENT_CODE#",
             "URL_TEMPLATES"
         ),
-        // ./ex2-81
+        // ./ex2-60
+        "ELEMENTS_COUNT"  =>  Array(
+            "PARENT" => "BASE",
+            "NAME" => GetMessage("EX2_60_DESC_LIST_CONT"),
+            "TYPE" => "STRING",
+            "DEFAULT" => "2",
+        ),
         "CACHE_TIME"  =>  Array("DEFAULT"=>180),
         "CACHE_GROUPS" => array(
             "PARENT" => "CACHE_SETTINGS",
@@ -40,4 +46,13 @@ $arComponentParameters = array(
             "DEFAULT" => "Y",
         ),
 	),
+);
+
+CIBlockParameters::AddPagerSettings(
+    $arComponentParameters,
+    GetMessage("EX2_60_DESC_PAGER_NEWS"), //$pager_title
+    true, //$bDescNumbering
+    true, //$bShowAllParam
+    false, //$bBaseLink
+    false //$bBaseLinkEnabled
 );
