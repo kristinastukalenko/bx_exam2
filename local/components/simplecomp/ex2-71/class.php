@@ -183,6 +183,19 @@ class CAPConnectComponent extends \CBitrixComponent
             return;
 		}
 
+        if($APPLICATION->GetShowIncludeAreas()) {
+            // <ex2-100>
+            // Метод возвращает массив, описывающий набор кнопок для управления элементами инфоблока
+            $arButtons = CIBlock::GetPanelButtons( $this->arParams["IBLOCK_ID_CATALOG"]);
+            // Добавляет стандартные кнопки к компоненту, которые отображаются в области компонента в режиме редактирования сайта
+            $this->addIncludeAreaIcons(CIBlock::GetComponentMenu($APPLICATION->GetPublicShowMode(), $arButtons));
+            // Добавляет новую кнопку к тем кнопкам компонента, которые отображаются в области компонента в режиме редактирования сайта
+            $this->AddIncludeAreaIcon(array(
+                                            'URL' => $arButtons["submenu"]["element_list"]["ACTION_URL"],
+                                            'TITLE' => GetMessage('EX2_100_TITLE_BTN'),
+                                        ));
+        }
+
         if($this->StartResultCache(false, [($this->arParams["CACHE_GROUPS"] === "N" ? false: $USER->GetGroups()), $this->bFilter] )) {
             $this->setArResult();
             if($this->bFilter){
